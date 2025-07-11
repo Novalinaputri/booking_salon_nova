@@ -65,3 +65,8 @@ Route::post('logout', function() {
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Route tabel user
+Route::view('/services', 'services')->name('user.services');
+Route::view('/staffs', 'staffs')->name('user.staffs');
+Route::view('/bookings', 'bookings')->name('user.bookings');
