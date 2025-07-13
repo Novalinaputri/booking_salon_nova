@@ -11,12 +11,16 @@ use App\Models\Booking;
 class DashboardController extends Controller
 {
     public function index()
-    {
-        return view('admin.dashboard', [
-            'serviceCount' => Service::count(),
-            'customerCount' => Customer::count(),
-            'staffCount'   => Staff::count(),
-            'bookingCount' => Booking::count(),
-        ]);
-    }
+{
+    return view('admin.dashboard', [
+        'serviceCount' => \App\Models\Service::count(),
+        'customerCount' => \App\Models\Customer::count(),
+        'staffCount'   => \App\Models\Staff::count(),
+        'bookingCount' => \App\Models\Booking::count(),
+        'recentServices' => \App\Models\Service::orderByDesc('id')->limit(5)->get(),
+        'recentCustomers' => \App\Models\Customer::orderByDesc('id')->limit(5)->get(),
+        'recentStaffs' => \App\Models\Staff::orderByDesc('id')->limit(5)->get(),
+        'recentBookings' => \App\Models\Booking::with(['customer','service','staff'])->orderByDesc('id')->limit(5)->get(),
+    ]);
+}
 }

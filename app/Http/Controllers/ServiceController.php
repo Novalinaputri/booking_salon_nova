@@ -23,27 +23,37 @@ public function edit(Service $service)
     return view('admin.services.edit', compact('service'));
 }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'description' => 'nullable'
-        ]);
-        Service::create($request->all());
-        return redirect()->route('services.index')->with('success', 'Layanan berhasil ditambahkan!');
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+        'description' => 'nullable',
+        'photo' => 'nullable|image|max:2048'
+    ]);
+    $data = $request->all();
+    if ($request->hasFile('photo')) {
+        $data['photo'] = $request->file('photo')->store('services', 'public');
     }
+    Service::create($data);
+    return redirect()->route('services.index')->with('success', 'Layanan berhasil ditambahkan!');
+}
 
-    public function update(Request $request, Service $service)
-    {
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'description' => 'nullable'
-        ]);
-        $service->update($request->all());
-        return redirect()->route('services.index')->with('success', 'Layanan berhasil diupdate!');
+public function update(Request $request, Service $service)
+{
+    $request->validate([
+        'name' => 'required',
+        'price' => 'required|numeric',
+        'description' => 'nullable',
+        'photo' => 'nullable|image|max:2048'
+    ]);
+    $data = $request->all();
+    if ($request->hasFile('photo')) {
+        $data['photo'] = $request->file('photo')->store('services', 'public');
     }
+    $service->update($data);
+    return redirect()->route('services.index')->with('success', 'Layanan berhasil diupdate!');
+}
 
     public function destroy(Service $service)
     {

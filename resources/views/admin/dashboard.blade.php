@@ -83,5 +83,73 @@
             </div>
         </div>
     </div>
+
+    <!-- Ringkasan Data Terbaru -->
+    <div class="row mt-4">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header gradient-pink text-white fw-bold">Layanan Terbaru</div>
+                <div class="card-body p-2">
+                    <ul class="list-group list-group-flush">
+                        @foreach($recentServices as $service)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ $service->name }}
+                                <span class="badge bg-pink">Rp{{ number_format($service->price,0,',','.') }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('services.index') }}" class="btn btn-link mt-2">Lihat Semua</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header gradient-blue text-white fw-bold">Pelanggan Terbaru</div>
+                <div class="card-body p-2">
+                    <ul class="list-group list-group-flush">
+                        @foreach($recentCustomers as $customer)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ $customer->name }}
+                                <span class="badge bg-secondary">{{ $customer->email }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('customers.index') }}" class="btn btn-link mt-2">Lihat Semua</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header gradient-purple text-white fw-bold">Staff Terbaru</div>
+                <div class="card-body p-2">
+                    <ul class="list-group list-group-flush">
+                        @foreach($recentStaffs as $staff)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ $staff->name }}
+                                <span class="badge bg-info">{{ $staff->speciality }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('staffs.index') }}" class="btn btn-link mt-2">Lihat Semua</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header gradient-green text-white fw-bold">Booking Terbaru</div>
+                <div class="card-body p-2">
+                    <ul class="list-group list-group-flush">
+                        @foreach($recentBookings as $booking)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ $booking->customer->name ?? '-' }} - {{ $booking->service->name ?? '-' }}
+                                <span class="badge bg-success">{{ ucfirst($booking->status) }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('bookings.index') }}" class="btn btn-link mt-2">Lihat Semua</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

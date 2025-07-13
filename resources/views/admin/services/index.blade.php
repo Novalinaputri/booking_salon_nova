@@ -70,36 +70,43 @@
     @endif
     <div class="table-responsive">
         <table class="table table-hover align-middle table-salon">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama Layanan</th>
-                    <th>Harga</th>
-                    <th>Deskripsi</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($services as $service)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $service->name }}</td>
-                        <td>Rp{{ number_format($service->price,0,',','.') }}</td>
-                        <td>{{ $service->description }}</td>
-                        <td>
-                            <a href="{{ route('services.edit', $service) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('services.destroy', $service) }}" method="POST" style="display:inline;">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus layanan ini?')">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center">Belum ada layanan.</td>
-                    </tr>
-                @endforelse
-            </tbody>
+        <thead>
+    <tr>
+        <th>No</th>
+        <th>Foto</th>
+        <th>Nama Layanan</th>
+        <th>Harga</th>
+        <th>Deskripsi</th>
+        <th>Aksi</th>
+    </tr>
+</thead>
+<tbody>
+    @forelse($services as $service)
+        <tr>
+            <td>{{ $loop->iteration }}</td>
+            <td>
+                @if($service->photo)
+                    <img src="{{ asset('storage/' . $service->photo) }}" alt="Foto" style="max-width:60px;">
+                @endif
+            </td>
+            <td>{{ $service->name }}</td>
+            <td>Rp{{ number_format($service->price, 2, ',', '.') }}</td>
+            <td>{{ $service->description }}</td>
+            <td>
+                <a href="{{ route('services.edit', $service) }}" class="btn btn-warning btn-sm">Edit</a>
+                <form action="{{ route('services.destroy', $service) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus layanan ini?')">Hapus</button>
+                </form>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="6" class="text-center">Belum ada layanan.</td>
+        </tr>
+    @endforelse
+</tbody>
         </table>
     </div>
 </div>

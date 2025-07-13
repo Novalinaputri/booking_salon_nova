@@ -7,6 +7,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    @php
+    use App\Models\Service;
+    use App\Models\Staff;
+    use App\Models\Booking;
+    use App\Models\Customer;
+
+    $services = Service::all();
+    $staffs = Staff::all();
+    $bookings = Booking::with(['customer','service','staff'])->orderByDesc('id')->limit(10)->get();
+
+    // Get recent user bookings (last 5 bookings)
+    $recentBookings = Booking::with(['customer','service','staff'])
+        ->orderByDesc('id')
+        ->limit(5)
+        ->get();
+    @endphp
     <style>
         body {
             background: linear-gradient(135deg, #f8bbd0 0%, #ce93d8 100%);
@@ -127,6 +143,45 @@
             color: #fff;
             text-decoration: underline;
         }
+        .booking-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 2px 12px 0 rgba(186, 104, 200, 0.10);
+            padding: 1.2rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid #f8bbd0;
+        }
+        .booking-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 32px 0 rgba(186, 104, 200, 0.15);
+            border-color: #ba68c8;
+        }
+        .service-name {
+            font-size: 1.1rem;
+            color: #ad1457;
+            font-weight: bold;
+        }
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .status-pending {
+            background-color: #ff9800; /* Orange */
+        }
+        .status-confirmed {
+            background-color: #4caf50; /* Green */
+        }
+        .status-cancelled {
+            background-color: #f44336; /* Red */
+        }
+        .booking-time {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ad1457;
+        }
     </style>
 </head>
 <body>
@@ -143,6 +198,7 @@
                     <li class="nav-item"><a class="nav-link" href="/services">Layanan</a></li>
                     <li class="nav-item"><a class="nav-link" href="/staffs">Staff</a></li>
                     <li class="nav-item"><a class="nav-link" href="/bookings">Booking</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user-bookings">Riwayat Booking</a></li>
                     <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
                 </ul>
             </div>
@@ -156,7 +212,7 @@
                 <h1 class="display-4 fw-bold mb-3" style="color:#ad1457;">Rasakan Pengalaman Salon Modern<br>di Nova Booking Salon</h1>
                 <div class="divider"></div>
                 <p class="lead mb-4" style="color:#ba68c8;">Salon & Nail Art profesional dengan suasana nyaman, alat modern, dan staff ramah. Booking online mudah, hasil memukau setiap hari!</p>
-                <a href="{{ route('bookings.create') }}" class="btn btn-booking btn-lg shadow">Booking Sekarang</a>
+                <a href="/booking-form" class="btn btn-booking btn-lg shadow">Booking Sekarang</a>
             </div>
             <div class="col-md-5 d-none d-md-block">
                 <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Salon Interior" class="hero-img">
@@ -170,31 +226,43 @@
         <div class="divider"></div>
         <div class="row g-4">
             <div class="col-md-3 col-6">
-                <div class="service-card">
+                <div class="service-card" onclick="selectServiceForBooking('Haircut & Styling', 150000)">
                     <div class="service-icon"><i class="bi bi-scissors"></i></div>
                     <div class="fw-bold mb-1">Haircut & Styling</div>
                     <div class="text-muted small">Potong dan tata rambut dengan stylist profesional, alat steril, dan teknik modern.</div>
+                    <div class="mt-2">
+                        <small class="text-primary fw-bold">Rp150.000</small>
+                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
-                <div class="service-card">
+                <div class="service-card" onclick="selectServiceForBooking('Nail Art & Manicure', 200000)">
                     <div class="service-icon"><i class="bi bi-brush"></i></div>
                     <div class="fw-bold mb-1">Nail Art & Manicure</div>
                     <div class="text-muted small">Kuku cantik, bersih, dan trendi dengan nail artist terbaik dan cat premium.</div>
+                    <div class="mt-2">
+                        <small class="text-primary fw-bold">Rp200.000</small>
+                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
-                <div class="service-card">
+                <div class="service-card" onclick="selectServiceForBooking('Facial & Spa', 300000)">
                     <div class="service-icon"><i class="bi bi-droplet-half"></i></div>
                     <div class="fw-bold mb-1">Facial & Spa</div>
                     <div class="text-muted small">Perawatan wajah & relaksasi dengan produk aman dan alat modern.</div>
+                    <div class="mt-2">
+                        <small class="text-primary fw-bold">Rp300.000</small>
+                    </div>
                 </div>
             </div>
             <div class="col-md-3 col-6">
-                <div class="service-card">
+                <div class="service-card" onclick="selectServiceForBooking('Hair Treatment', 250000)">
                     <div class="service-icon"><i class="bi bi-stars"></i></div>
                     <div class="fw-bold mb-1">Hair Treatment</div>
                     <div class="text-muted small">Perawatan rambut rontok, kering, dan rusak dengan teknologi terbaru.</div>
+                    <div class="mt-2">
+                        <small class="text-primary fw-bold">Rp250.000</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -261,6 +329,59 @@
         </div>
     </div>
 
+    <!-- Booking Terbaru -->
+    <div class="container mb-5">
+        <h3 class="text-center mb-2" style="color:#ad1457;">Booking Terbaru</h3>
+        <div class="divider"></div>
+        <div class="row">
+            @forelse($recentBookings as $booking)
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="booking-card">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h6 class="service-name mb-1">{{ $booking->service->name ?? 'Layanan tidak tersedia' }}</h6>
+                                <small class="text-muted">{{ $booking->customer->name ?? 'Pelanggan' }}</small>
+                            </div>
+                            <div class="text-end">
+                                <div class="status-badge status-{{ $booking->status }}">
+                                    {{ ucfirst($booking->status) }}
+                                </div>
+                                <small class="text-muted d-block">#{{ $booking->id }}</small>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <small class="text-muted d-block">Staff</small>
+                                <div class="fw-bold">{{ $booking->staff->name ?? 'Belum ditentukan' }}</div>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block">Waktu</small>
+                                <div class="booking-time">{{ \Carbon\Carbon::parse($booking->booking_time)->format('d M H:i') }}</div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-2">
+                            <small class="text-muted">Rp{{ number_format($booking->service->price ?? 0,0,',','.') }}</small>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-12">
+                    <div class="text-center py-4">
+                        <i class="bi bi-calendar-x" style="font-size: 3rem; color: #ba68c8;"></i>
+                        <h5 class="mt-3" style="color: #ad1457;">Belum ada booking</h5>
+                        <p class="text-muted">Jadilah yang pertama untuk booking layanan kami!</p>
+                        <a href="/booking-form" class="btn btn-booking">Booking Sekarang</a>
+                    </div>
+                </div>
+            @endforelse
+        </div>
+        @if($recentBookings->count() > 0)
+            <div class="text-center mt-3">
+                <a href="/user-bookings" class="btn btn-outline-primary">Lihat Semua Booking</a>
+            </div>
+        @endif
+    </div>
+
     <!-- Footer Kontak -->
     <footer class="py-4 bg-dark text-white text-center" id="kontak">
         <div class="container">
@@ -280,5 +401,17 @@
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function selectServiceForBooking(serviceName, price) {
+            // Store selected service data in localStorage
+            localStorage.setItem('selectedService', JSON.stringify({
+                name: serviceName,
+                price: price
+            }));
+            
+            // Redirect to booking form
+            window.location.href = '/booking-form';
+        }
+    </script>
 </body>
 </html>
