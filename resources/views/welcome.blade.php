@@ -375,42 +375,49 @@
     </div>
 </div>
 
-   <!-- Footer Kontak -->
-<footer class="py-4 bg-dark text-white text-center" id="kontak">
+ <!-- Footer Kontak -->
+<footer class="bg-secondary-subtle text-dark py-4" id="kontak">
     <div class="container">
-        <div class="row justify-content-center">
-            <!-- Kontak Info -->
-            <div class="col-md-6 mb-3 mb-md-0">
-                <div class="footer-contact text-start">
-                    <div class="mb-2">
-                        <i class="bi bi-geo-alt-fill"></i> 
-                        Jl. Dr. Moh. Hatta Jl. Psr. Baru No.57, Cupak Tangah, Kec.Pauh, Kota Padang, Sumatera Barat 25176
-                    </div>
-                    <div class="mb-2">
-                        <i class="bi bi-whatsapp"></i> 
-                        <a href="https://wa.me/62813 7445 7480" target="_blank" class="text-white text-decoration-underline">
+        <div class="row gy-4 justify-content-between align-items-center">
+            <!-- Info Kontak -->
+            <div class="col-md-6 border-end border-dark-subtle pe-md-5">
+                <h5 class="fw-semibold text-uppercase text-muted mb-3">Hubungi Kami</h5>
+                <ul class="list-unstyled mb-0 small">
+                    <li class="mb-2">
+                        <i class="bi bi-geo-alt-fill me-2 text-dark"></i> 
+                        Jl. Dr. Moh. Hatta No.57, Cupak Tangah, Pauh, Padang
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-whatsapp me-2 text-success"></i> 
+                        <a href="https://wa.me/6281374457480" target="_blank" class="text-decoration-none text-dark">
                             0813 7445 7480
                         </a>
-                    </div>
-                    <div class="mb-2">
-                        <i class="bi bi-instagram"></i> 
-                        <a href="https://instagram.com/novasalon" target="_blank" class="text-white text-decoration-underline">
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-instagram me-2 text-danger"></i> 
+                        <a href="https://instagram.com/novasalon" target="_blank" class="text-decoration-none text-dark">
                             @novasalon
                         </a>
-                    </div>
-                    <div>
-                        <i class="bi bi-clock"></i> Senin - Sabtu: 09.00 - 19.00
-                    </div>
-                </div>
+                    </li>
+                    <li>
+                        <i class="bi bi-clock me-2 text-dark"></i> 
+                        Senin - Sabtu: 09.00 - 19.00
+                    </li>
+                </ul>
             </div>
 
-            <!-- Copyright -->
-            <div class="col-md-6 align-self-center text-md-end text-center">
-                <small>&copy; {{ date('Y') }} Nova Booking Salon.</small>
+            <!-- Branding -->
+            <div class="col-md-5 text-md-end text-center ps-md-5">
+                <h5 class="fw-semibold text-uppercase text-muted mb-2">Nova Booking Salon</h5>
+                <p class="mb-1 small text-muted">Kenyamanan & Kepuasan Pelanggan adalah Prioritas Kami</p>
+                <p class="mb-0 small text-muted">&copy; {{ date('Y') }} All rights reserved</p>
+                <p class="small text-muted">Powered by Laravel</p>
             </div>
         </div>
     </div>
 </footer>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
