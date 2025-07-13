@@ -90,7 +90,7 @@
                 @endif
             </td>
             <td>{{ $service->name }}</td>
-            <td>Rp{{ number_format($service->price, 2, ',', '.') }}</td>
+            <td>Rp{{ number_format($service->price, 0, ',', '.') }}</td>
             <td>{{ $service->description }}</td>
             <td>
                 <a href="{{ route('services.edit', $service) }}" class="btn btn-warning btn-sm">Edit</a>
