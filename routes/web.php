@@ -48,5 +48,5 @@ Route::get('/', function () {
 Route::view('/services', 'services')->name('user.services');
 Route::view('/staffs', 'staffs')->name('user.staffs');
 Route::view('/bookings', 'bookings')->name('user.bookings');
-Route::view('/booking-form', 'booking-form')->name('user.booking-form');
+Route::view('/booking-form', 'booking-form')->middleware('auth')->name('user.booking-form');
 Route::view('/user-bookings', 'user-bookings')->name('user.bookings.history');
