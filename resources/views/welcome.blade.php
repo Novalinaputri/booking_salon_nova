@@ -225,6 +225,7 @@
                 </li>
 
                 <!-- Login & Register Buttons -->
+                @guest
                 <li class="nav-item">
                     <a href="/login" class="btn btn-outline-primary btn-sm rounded-pill px-3">Login</a>
                 </li>
@@ -234,6 +235,15 @@
                         Register
                     </a>
                 </li>
+                @endguest
+                @auth
+                <li class="nav-item">
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3 ms-2">Logout</button>
+                    </form>
+                </li>
+                @endauth
             </ul>
         </div>
     </div>

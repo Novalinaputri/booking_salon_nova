@@ -36,7 +36,7 @@ Route::get('/home', function () {
 use Illuminate\Support\Facades\Auth;
 Route::post('logout', function() {
     Auth::logout();
-    return redirect('/login');
+    return redirect('/'); // redirect ke halaman utama user
 })->name('logout');
 
 // Route halaman utama
